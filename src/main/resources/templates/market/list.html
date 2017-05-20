@@ -48,6 +48,7 @@
                     <td th:if="${sharehold.getSoldPrice() != 0}" th:text="${sharehold.getSoldDate()}"></td>
                     <td th:if="${sharehold.getSoldPrice() == 0}">
                         <input type="hidden" th:id="'shareholds'+${sharehold.getHouse().getId()}" th:value="${sharehold.getSharehold()}" />
+                        
                         <input type="hidden" th:id="'boughtPrice'+${sharehold.getHouse().getId()}" th:value="${sharehold.getBoughtPrice()}" />
                         <a class="btn btn-success sell" th:href="'/market/buy/'+${sharehold.getId()}">Megvásárlás</a>
                     </td>
