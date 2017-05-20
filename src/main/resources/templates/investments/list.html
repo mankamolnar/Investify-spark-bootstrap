@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head :: copy"></head>
+<body>
+
+    <div th:replace="navbar :: copy"></div>
+
+    <div class="row">
+        <div class="col-lg-1">
+
+        </div>
+        <div class="col-lg-10">
+
+            <h1>Befektetéseid</h1>
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Sharehold</th>
+                    <th>Darab ár</th>
+                    <th>Össz ár</th>
+                    <th>Befizetés napja</th>
+                    <th>Teljesítés végső határideje</th>
+                    <th>Zárt pózíció-e</th>
+                    <th>Felhasználó Az.</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="investment, iterationStatus : ${investments}">
+                    <td th:text="${investment.getShareholds()}"></td>
+                    <td th:text="${investment.formatMoney(investment.getPrice())+' HUF'}"></td>
+                    <td th:text="${investment.formatMoney(investment.getPriceAll())+' HUF'}"></td>
+                    <td th:text="${investment.getStartDate()}"></td>
+                    <td th:text="${investment.getEndDate()}"></td>
+                    <td th:text="${investment.getClosed()}"></td>
+                    <td th:text="${'#'+investment.getUid()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-1">
+
+        </div>
+    </div>
+
+
+    <div th:replace="footer :: copy"></div>
+
+</body>
+</html>

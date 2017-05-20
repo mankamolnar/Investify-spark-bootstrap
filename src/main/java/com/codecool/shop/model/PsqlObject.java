@@ -10,6 +10,19 @@ public class PsqlObject extends DbConnection {
 
     protected int id;
 
+    public String formatMoney(Integer money) {
+        String formatted = "";
+        String moneyStr = money.toString();
+
+        for (int i = moneyStr.length()-1; i >= 0; i--) {
+            if ((moneyStr.length() - 1 - i) % 3 == 0) {
+                formatted = " " + formatted;
+            }
+            formatted = moneyStr.substring(i, i+1) + formatted;
+        }
+        return formatted;
+    }
+
     // *** GETTERS & SETTERS ***
     public int getId() {
         return id;

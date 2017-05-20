@@ -10,6 +10,12 @@
     margin-top:10px;
 }
 
+.td-4 {
+    float: left;
+    width:25%;
+    margin-top:10px;
+}
+
 .td-5 {
     float: left;
     width:20%;
@@ -41,6 +47,10 @@
     text-align: center;
 }
 
+.block-c {
+    margin: 0 auto !important;
+}
+
 .r {
     text-align: right;
 }
@@ -68,4 +78,8 @@
 
 .half {
     width:50% !important;
+}
+
+.clickable {
+    cursor: pointer;
 }

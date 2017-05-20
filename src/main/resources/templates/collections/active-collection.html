@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div class="jumbotron text-center" th:fragment="copy">
+
+    <div th:if="${error != null and error == 'yes'}" class="alert alert-danger">Nincs elegendő pénzed!</div>
+
+    <h1>Jelenlegi gyűjtésünk állása</h1>
+    <div class="progress mprogress">
+        <div class="progress-bar progress-bar-striped active" aria-valuenow="43"
+             aria-valuemin="0" aria-valuemax="100" th:style="'width:'+${collection.getState()}+'%;'">
+        </div>
+    </div>
+
+    <p>
+        <br />
+        <b th:text="${collection.formatMoney(collection.getPayedIn())}"></b><b> HUF</b> /
+        <span th:text="${collection.formatMoney(collection.getGoal())}"></span> HUF<br /><br />
+
+        <b>Minimum befektethető:</b> <span th:text="${collection.formatMoney(collection.getShareholdPrice())}"></span>
+        HUF<br/>
+        <b>Garantált bruttó ingatlan megtérülési idő:</b> 12-15 év<br />
+        <b>Várható havi bruttó hozam:</b> ~500 HUF<br />
+        <b>Befektetők száma:</b> <span th:text="${collection.getInvestors()}"></span><br />
+    </p>
+
+    <form th:action="'/collections/payin/' + ${collection.getId()}" method="post">
+        <div class="td-4"></div>
+        <div class="td-4">
+            <div class="input-group" th:if="${user.getId() != 0}">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                <input type="text" class="form-control" name="quantity" placeholder="Shareholdok száma (pl.: 1)" />
+            </div>
+            <a class="btn btn-info" href="/faq" th:if="${user.getId() == 0}">További információ</a>
+        </div>
+        <div class="td-4 c">
+            <a th:if="${user.getId() == 0}" class="btn btn-success" href="/registration">Befektetek</a>
+            <button type="submit" th:if="${user.getId() != 0}" class="btn btn-success">Befektetek</button>
+        </div>
+        <div class="td-4"></div>
+    </form>
+</div>
+
+</body>
+</html>

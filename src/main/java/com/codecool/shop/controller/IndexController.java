@@ -1,5 +1,7 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.model.Collection;
+import com.codecool.shop.model.User;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -17,16 +19,29 @@ public class IndexController {
     }
 
     public static ModelAndView homePage(Request req, Response res) {
-        Map params = new HashMap<>();
-        params.put("page", pageName.INDEX);
+        User user = new User();
+        user.initFromSession(req.session());
+        Collection collection = Collection.findActive();
 
-        return new ModelAndView(params, "index");
+        Map params = new HashMap<>();
+        params.put("page",pageName.INDEX.name());
+        params.put("collection", collection);
+        params.put("user", user);
+
+        if (user.getId() == 0) {
+            return new ModelAndView(params, "index");
+        } else {
+            return new ModelAndView(params, "user/dashboard");
+        }
     }
 
     public static ModelAndView faq(Request req, Response res) {
-        Map params = new HashMap<>();
-        params.put("page", pageName.FAQ);
+        User user = new User();
+        user.initFromSession(req.session());
 
+        Map params = new HashMap<>();
+        params.put("page", pageName.FAQ.name());
+        params.put("user", user);
         return new ModelAndView(params, "faq/index");
     }
 }

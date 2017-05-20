@@ -2,25 +2,34 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <body>
 
-<nav class="navbar navbar-default" th:fragment="copy">
+<nav class="navbar navbar-default upNavbar" th:fragment="copy">
     <div class="navbar-header">
         <a class="navbar-brand" href="/">Investify</a>
     </div>
 
-    <ul class="nav navbar-nav">
-        <li th:if="${page.name()} == 'FAQ'"><a href="/">Főoldal</a></li>
-        <li th:if="${page.name()} == 'FAQ'" class="active"><a href="/faq">Rendszerünk működése</a></li>
+    <div>
+        <ul th:if="${user.getId() == 0}" class="nav navbar-nav">
+            <li th:class="${page == 'INDEX'} ? 'active' : ''"><a href="/">Főoldal</a></li>
+            <li th:class="${page == 'FAQ'} ? 'active' : ''"><a href="/faq">Rendszerünk működése</a></li>
+        </ul>
+        <ul th:if="${user.getId() > 0}" class="nav navbar-nav">
+            <li th:class="${page == 'INDEX'} ? 'active' : ''"><a href="/">Dashboard</a></li>
+            <li th:class="${page == 'INVESTMENTS'} ? 'active' : ''"><a href="/investments">Befektetéseid</a></li>
+            <li th:class="${page == 'SHAREHOLDS'} ? 'active' : ''"><a href="/shareholds">Shareholdjaid</a></li>
+            <li th:class="${page == 'MARKET'} ? 'active' : ''"><a href="/market">Eladó Shareholdok</a></li>
+            <li th:class="${page == 'COLLECTIONS'} ? 'active' : ''"><a href="/collections">Gyűjtések</a></li>
+        </ul>
+    </div>
 
-        <li th:if="${page.name()} == 'INDEX'" class="active"><a href="/">Főoldal</a></li>
-        <li th:if="${page.name()} == 'INDEX'"><a href="/faq">Rendszerünk működése</a></li>
-
-        <li th:if="${page.name()} == 'LOGIN'"><a href="/">Főoldal</a></li>
-        <li th:if="${page.name()} == 'LOGIN'"><a href="/faq">Rendszerünk működése</a></li>
-    </ul>
-
-    <div class="mnavbar-right" style="float:right;">
-        <a href="/registration" class="btn btn-info">Regisztráció</a>
-        <a href="/login" class="btn btn-success">Belépés</a>
+    <div class="mnavbar-right" th:switch="${user.getId()}">
+        <div th:case="0">
+            <a href="/registration" class="btn btn-info">Regisztráció</a>
+            <a href="/login" class="btn btn-success">Belépés</a>
+        </div>
+        <div th:case="*">
+            <a class="btn btn-success" href="/payin">Befizetés</a>
+            <a class="btn btn-danger" href="/logout">Kijelentkezés</a>
+        </div>
     </div>
 </nav>
 

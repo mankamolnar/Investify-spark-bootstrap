@@ -1,10 +1,19 @@
 .mnavbar-right {
     float: right;
-    height:50px;
-    line-height:50px;
+    height:60px;
+    line-height:60px;
+    margin-right: 10px;
 }
 
 .mprogress {
     width:90%;
     margin:0 auto;
+}
+
+.upNavbar {
+    border-radius:0px !important;
+}
+
+#picmodal-img {
+    width:100%;
 }

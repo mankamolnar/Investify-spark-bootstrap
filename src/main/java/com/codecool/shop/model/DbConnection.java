@@ -10,9 +10,9 @@ import java.sql.SQLException;
  */
 public class DbConnection {
 
-    private static final String DATABASE = "jdbc:postgresql://localhost:5432/investify";
+    private static final String DATABASE = "jdbc:postgresql://localhost:5432/investify_hu?useUnicode=true&characterEncoding=UTF-8";
     private static final String DB_USER = "postgres";
-    private static final String DB_PASSWORD = "root";
+    private static final String DB_PASSWORD = "postgres";
     public static Connection CONNECTION;
 
     public static void dbConnect() {
