@@ -1,0 +1,530 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.6.2
+-- Dumped by pg_dump version 9.6.2
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: collections; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE collections (
+    id integer NOT NULL,
+    payedin integer NOT NULL,
+    goal integer NOT NULL,
+    shareholdprice integer NOT NULL,
+    investors integer NOT NULL,
+    started date,
+    active integer
+);
+
+
+ALTER TABLE collections OWNER TO postgres;
+
+--
+-- Name: collections_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE collections_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE collections_id_seq OWNER TO postgres;
+
+--
+-- Name: collections_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE collections_id_seq OWNED BY collections.id;
+
+
+--
+-- Name: housepictures; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE housepictures (
+    id integer NOT NULL,
+    houseid integer NOT NULL,
+    url text NOT NULL,
+    description text NOT NULL
+);
+
+
+ALTER TABLE housepictures OWNER TO postgres;
+
+--
+-- Name: housepictures_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE housepictures_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE housepictures_id_seq OWNER TO postgres;
+
+--
+-- Name: housepictures_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE housepictures_id_seq OWNED BY housepictures.id;
+
+
+--
+-- Name: houses; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE houses (
+    id integer NOT NULL,
+    area integer NOT NULL,
+    zipcode integer NOT NULL,
+    address text NOT NULL,
+    city text NOT NULL,
+    predictedincome integer NOT NULL
+);
+
+
+ALTER TABLE houses OWNER TO postgres;
+
+--
+-- Name: houses_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE houses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE houses_id_seq OWNER TO postgres;
+
+--
+-- Name: houses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE houses_id_seq OWNED BY houses.id;
+
+
+--
+-- Name: investments; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE investments (
+    id integer NOT NULL,
+    shareholds integer NOT NULL,
+    price integer NOT NULL,
+    priceall integer NOT NULL,
+    startdate date NOT NULL,
+    enddate date NOT NULL,
+    closed boolean NOT NULL,
+    uid integer NOT NULL
+);
+
+
+ALTER TABLE investments OWNER TO postgres;
+
+--
+-- Name: investments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE investments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE investments_id_seq OWNER TO postgres;
+
+--
+-- Name: investments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE investments_id_seq OWNED BY investments.id;
+
+
+--
+-- Name: market; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE market (
+    id integer NOT NULL,
+    shareholdid integer NOT NULL,
+    sharehold integer NOT NULL,
+    price integer NOT NULL,
+    started date NOT NULL,
+    ended date,
+    active boolean NOT NULL
+);
+
+
+ALTER TABLE market OWNER TO postgres;
+
+--
+-- Name: market_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE market_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE market_id_seq OWNER TO postgres;
+
+--
+-- Name: market_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE market_id_seq OWNED BY market.id;
+
+
+--
+-- Name: shareholds; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE shareholds (
+    id integer NOT NULL,
+    houseid integer NOT NULL,
+    boughtprice integer NOT NULL,
+    soldprice integer DEFAULT 0 NOT NULL,
+    monthlyincome integer NOT NULL,
+    boughtdate date NOT NULL,
+    solddate date,
+    userid integer NOT NULL,
+    sharehold integer DEFAULT 1 NOT NULL
+);
+
+
+ALTER TABLE shareholds OWNER TO postgres;
+
+--
+-- Name: shareholds_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE shareholds_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE shareholds_id_seq OWNER TO postgres;
+
+--
+-- Name: shareholds_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE shareholds_id_seq OWNED BY shareholds.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE users (
+    username text,
+    password text,
+    cash integer,
+    shareholds integer,
+    id integer NOT NULL,
+    email text
+);
+
+
+ALTER TABLE users OWNER TO postgres;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE users_id_seq OWNER TO postgres;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: collections id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY collections ALTER COLUMN id SET DEFAULT nextval('collections_id_seq'::regclass);
+
+
+--
+-- Name: housepictures id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY housepictures ALTER COLUMN id SET DEFAULT nextval('housepictures_id_seq'::regclass);
+
+
+--
+-- Name: houses id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY houses ALTER COLUMN id SET DEFAULT nextval('houses_id_seq'::regclass);
+
+
+--
+-- Name: investments id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY investments ALTER COLUMN id SET DEFAULT nextval('investments_id_seq'::regclass);
+
+
+--
+-- Name: market id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY market ALTER COLUMN id SET DEFAULT nextval('market_id_seq'::regclass);
+
+
+--
+-- Name: shareholds id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY shareholds ALTER COLUMN id SET DEFAULT nextval('shareholds_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Data for Name: collections; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY collections (id, payedin, goal, shareholdprice, investors, started, active) FROM stdin;
+1	6000000	10000000	100000	29	2017-05-10	1
+\.
+
+
+--
+-- Name: collections_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('collections_id_seq', 2, true);
+
+
+--
+-- Data for Name: housepictures; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY housepictures (id, houseid, url, description) FROM stdin;
+1	1	http://ingatlancdn.com/photos/08/44/22839156_110816158_l.jpg	A szoba mérete
+\.
+
+
+--
+-- Name: housepictures_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('housepictures_id_seq', 1, true);
+
+
+--
+-- Data for Name: houses; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY houses (id, area, zipcode, address, city, predictedincome) FROM stdin;
+1	19	1133	Reitter Ferenc utca 13	Budapest	520
+\.
+
+
+--
+-- Name: houses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('houses_id_seq', 1, true);
+
+
+--
+-- Data for Name: investments; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY investments (id, shareholds, price, priceall, startdate, enddate, closed, uid) FROM stdin;
+14	3	100000	300000	2017-05-12	2017-11-12	f	6
+15	1	100000	100000	2017-05-12	2017-11-12	f	6
+16	5	100000	500000	2017-05-13	2017-11-13	f	6
+17	5	100000	500000	2017-05-13	2017-11-13	f	6
+18	3	100000	300000	2017-05-16	2017-11-16	f	6
+19	6	100000	600000	2017-05-20	2017-11-20	f	6
+\.
+
+
+--
+-- Name: investments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('investments_id_seq', 19, true);
+
+
+--
+-- Data for Name: market; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY market (id, shareholdid, sharehold, price, started, ended, active) FROM stdin;
+1	1	1	120000	2017-05-20	\N	t
+\.
+
+
+--
+-- Name: market_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('market_id_seq', 1, true);
+
+
+--
+-- Data for Name: shareholds; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY shareholds (id, houseid, boughtprice, soldprice, monthlyincome, boughtdate, solddate, userid, sharehold) FROM stdin;
+1	1	100000	0	520	2017-05-13	\N	6	1
+\.
+
+
+--
+-- Name: shareholds_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('shareholds_id_seq', 1, true);
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY users (username, password, cash, shareholds, id, email) FROM stdin;
+a	a	0	0	1	\N
+ksaélfdj	qlkfsdjé	0	0	3	markmanomolnar@gmail.com
+ksaélfdj	qlkfsdjé	0	0	4	markmanomolnar@gmail.com
+manka	manka	500000	0	5	\N
+mr. m	m	800000	1	6	markmanomolnar@gmail.com
+\.
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('users_id_seq', 6, true);
+
+
+--
+-- Name: collections collections_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY collections
+    ADD CONSTRAINT collections_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: housepictures housepictures_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY housepictures
+    ADD CONSTRAINT housepictures_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: houses houses_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY houses
+    ADD CONSTRAINT houses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: investments investments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY investments
+    ADD CONSTRAINT investments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: market market_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY market
+    ADD CONSTRAINT market_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: shareholds shareholds_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY shareholds
+    ADD CONSTRAINT shareholds_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
