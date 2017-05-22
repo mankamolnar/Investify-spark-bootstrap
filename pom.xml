@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.mycompany.app</groupId>
-    <artifactId>my-app</artifactId>
+    <groupId>com.investify.app</groupId>
+    <artifactId>investify-hu</artifactId>
     <version>1.0</version>
     <build>
         <plugins>
@@ -46,7 +46,7 @@
                 <version>0.4.4</version>
                 <configuration>
                     <jdkVersion>1.8</jdkVersion>
-                    <appName>spark-heroku-example</appName>
+                    <appName>investify-hu</appName>
                     <processTypes>
                         <!-- Tell Heroku how to launch your application -->
                         <web>java -jar ./target/my-app-1.0-jar-with-dependencies.jar</web>
