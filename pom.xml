@@ -46,7 +46,7 @@
                 <version>0.4.4</version>
                 <configuration>
                     <jdkVersion>1.8</jdkVersion>
-                    <appName>spark-heroku-example</appName>
+                    <appName>investify-hu</appName>
                     <processTypes>
                         <!-- Tell Heroku how to launch your application -->
                         <web>java -jar ./target/investify-hu-1.0-jar-with-dependencies.jar</web>
