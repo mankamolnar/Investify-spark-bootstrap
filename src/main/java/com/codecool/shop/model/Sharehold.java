@@ -1,8 +1,5 @@
 package com.codecool.shop.model;
 
-import com.codecool.shop.interfaces.SessionReady;
-import spark.Session;
-
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

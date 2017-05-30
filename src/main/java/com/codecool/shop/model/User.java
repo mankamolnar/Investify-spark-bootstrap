@@ -88,6 +88,13 @@ public class User extends PsqlObject implements SessionReady {
         return Investment.findByUid(getId()).size();
     }
 
+    public boolean hasShareholdForSale() {
+        if (Market.countShareholdsForSaleByUser(id) > 0) {
+            return true;
+        }
+        return false;
+    }
+
     // *** GETTERS & SETTERS
     public ArrayList<Investment> getInvestments() {
         return Investment.findByUid(getId());

@@ -134,4 +134,25 @@ public class Market extends PsqlObject {
 
         return 0;
     }
+
+    public static int countShareholdsForSaleByUser(int userId) {
+        String query = "SELECT count(*) as shareholds FROM market LEFT JOIN shareholds ON shareholds.id = market.shareholdid WHERE userid = ?;";
+        PreparedStatement statement = getPreparedStatement(query);
+        ResultSet resultSet;
+
+        try {
+            statement.setInt(1, userId);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("shareholds");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+
+        return 0;
+    }
 }
