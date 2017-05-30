@@ -14,7 +14,7 @@ public class Main {
         staticFileLocation("/public");
         port(getHerokuAssignedPort());
 
-        get("/", /*IndexController::homePage*/(req, res) -> "Hello World");
+        get("/", IndexController::homePage, new ThymeleafTemplateEngine());
         get("/faq", IndexController::faq, new ThymeleafTemplateEngine());
 
         get("/login", UserController::loginGet, new ThymeleafTemplateEngine());

@@ -10,9 +10,9 @@ import java.sql.SQLException;
  */
 public class DbConnection {
 
-    private static final String DATABASE = "jdbc:postgres://kmapvworznkjow:1253bdbf8729f7a97e1ad8fdc5737ea9e4470975d0bce780d202d2ceef344027@ec2-54-228-235-185.eu-west-1.compute.amazonaws.com:5432/d7qsdjeli61kss?useUnicode=true&characterEncoding=UTF-8";
-    private static final String DB_USER = "kmapvworznkjow";
-    private static final String DB_PASSWORD = "1253bdbf8729f7a97e1ad8fdc5737ea9e4470975d0bce780d202d2ceef344027";
+    private static final String DATABASE = "jdbc:postgresql://localhost:5432/investify_hu?useUnicode=true&characterEncoding=UTF-8";
+    private static final String DB_USER = "postgres";
+    private static final String DB_PASSWORD = "postgres";
     public static Connection CONNECTION;
 
     public static void dbConnect() {

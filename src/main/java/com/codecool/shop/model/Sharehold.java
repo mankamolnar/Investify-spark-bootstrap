@@ -76,6 +76,13 @@ public class Sharehold extends PsqlObject {
         return House.find(houseId);
     }
 
+    public boolean isSellable() {
+        if (Market.countShareholdsForSale(id) < sharehold) {
+            return true;
+        }
+        return false;
+    }
+
     // *** STATIC METHODS (PSQL) ***
     public static Sharehold find(Integer id) {
         String query = "SELECT * FROM shareholds WHERE id = ?;";
