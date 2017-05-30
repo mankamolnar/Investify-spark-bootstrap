@@ -47,9 +47,10 @@
                     <td th:text="${sharehold.getBoughtDate()}"></td>
                     <td th:if="${sharehold.getSoldPrice() != 0}" th:text="${sharehold.getSoldDate()}"></td>
                     <td th:if="${sharehold.getSoldPrice() == 0}">
-                        <input type="hidden" th:id="'shareholds'+${sharehold.getHouse().getId()}" th:value="${sharehold.getSharehold()}" />
+                        <input type="hidden" th:id="'shareholds'+${sharehold.getHouse().getId()}" th:value="${sharehold.getMaxSellable()}" />
                         <input type="hidden" th:id="'boughtPrice'+${sharehold.getHouse().getId()}" th:value="${sharehold.getBoughtPrice()}" />
-                        <button class="btn btn-success sell" data-toggle="modal" data-target="#sell-modal">Eladás</button>
+                        <button th:if="${sharehold.isSellable()}" class="btn btn-success sell" data-toggle="modal" data-target="#sell-modal">Eladás</button>
+                        <span th:id="${!sharehold.isSellable()}" class="glyphicon glyphicon-remove"></span>
                     </td>
                 </tr>
                 </tbody>
@@ -95,7 +96,7 @@
                         <input type="hidden" name="id" id="id" value="0" />
                         <input type="hidden" name="boughtPrice" id="boughtPrice" value="0" />
                         <label for="quantity">Mennyiség: (max. <span id="max-quantity-span">4</span>)</label><br/>
-                        <input type="number" name="quantity" min="1" id="quantity" placeholder="pl.: 1" class="form-control half block-c" /><br/>
+                        <input type="number" name="quantity" min="0" id="quantity" placeholder="pl.: 1" class="form-control half block-c" /><br/>
                         <button type="submit" class="btn btn-success">Eladás</button>
                     </form>
 

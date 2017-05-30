@@ -83,6 +83,10 @@ public class Sharehold extends PsqlObject {
         return false;
     }
 
+    public int getMaxSellable() {
+        return sharehold-Market.countShareholdsForSale(id);
+    }
+
     // *** STATIC METHODS (PSQL) ***
     public static Sharehold find(Integer id) {
         String query = "SELECT * FROM shareholds WHERE id = ?;";
