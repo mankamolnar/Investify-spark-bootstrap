@@ -186,4 +186,19 @@ public class Market extends PsqlObject {
 
         return 0;
     }
+
+    public static void delete(String id) {
+        String query = "DELETE FROM market WHERE id = ?;";
+
+        try {
+            PreparedStatement statement = getPreparedStatement(query);
+            statement.setInt(1, Integer.parseInt(id));
+            statement.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+
+    }
 }

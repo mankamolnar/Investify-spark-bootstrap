@@ -52,4 +52,12 @@ public class MarketController {
         return ShareholdController.list(req, res);
     }
 
+    public static ModelAndView delete(Request req, Response res) {
+        Market.delete(
+                req.params("id")
+        );
+
+        return ShareholdController.list(req, res);
+    }
+
 }
