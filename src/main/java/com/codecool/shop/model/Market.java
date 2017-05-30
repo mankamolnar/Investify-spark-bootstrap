@@ -74,7 +74,7 @@ public class Market extends PsqlObject {
     }
 
     public static List<Sharehold> findAllByUser(int userid) {
-        String query = "SELECT shareholds.* FROM market LEFT JOIN shareholds ON market.shareholdid = shareholds.id WHERE active = TRUE and shareholds.userid = ?;";
+        String query = "SELECT shareholds.*, market.id as mid FROM market LEFT JOIN shareholds ON market.shareholdid = shareholds.id WHERE active = TRUE and shareholds.userid = ?;";
         PreparedStatement statement = getPreparedStatement(query);
         ResultSet resultSet;
         ArrayList<Sharehold> result = new ArrayList();
@@ -85,7 +85,7 @@ public class Market extends PsqlObject {
 
             while (resultSet.next()) {
                 result.add(new Sharehold(
-                        resultSet.getInt("id"),
+                        resultSet.getInt("mid"),
                         resultSet.getInt("houseId"),
                         resultSet.getInt("boughtPrice"),
                         resultSet.getInt("soldPrice"),

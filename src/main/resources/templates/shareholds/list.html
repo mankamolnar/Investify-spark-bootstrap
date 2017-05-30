@@ -50,7 +50,7 @@
                         <input type="hidden" th:id="'shareholds'+${sharehold.getHouse().getId()}" th:value="${sharehold.getMaxSellable()}" />
                         <input type="hidden" th:id="'boughtPrice'+${sharehold.getHouse().getId()}" th:value="${sharehold.getBoughtPrice()}" />
                         <button th:if="${sharehold.isSellable()}" class="btn btn-success sell" data-toggle="modal" data-target="#sell-modal">Eladás</button>
-                        <span th:id="${!sharehold.isSellable()}" class="glyphicon glyphicon-remove"></span>
+                        <span th:if="${!sharehold.isSellable()}" class="glyphicon glyphicon-remove"></span>
                     </td>
                 </tr>
                 </tbody>
