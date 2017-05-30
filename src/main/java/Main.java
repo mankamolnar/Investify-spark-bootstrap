@@ -32,6 +32,7 @@ public class Main {
 
         get("/market", MarketController::all, new ThymeleafTemplateEngine());
         post("/market/sell/:id", MarketController::sell, new ThymeleafTemplateEngine());
+        get("/market/delete/:id", MarketController::delete, new ThymeleafTemplateEngine());
 
         get("/api/get-pictures/:id", ApiController::getPhotos);
 
