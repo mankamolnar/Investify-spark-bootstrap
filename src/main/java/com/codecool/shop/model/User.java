@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,7 +40,7 @@ public class User extends PsqlObject implements SessionReady {
         this.email = email;
     }
 
-    // *** INSTANCE METHODS (SESSION) ***
+    // *** INSTANCE METHODS ***
     public void saveToSession(Session session) {
         session.attribute("user", this);
     }
@@ -93,6 +94,10 @@ public class User extends PsqlObject implements SessionReady {
             return true;
         }
         return false;
+    }
+
+    public List<Sharehold> getShareholdsForSale() {
+        return Market.findAllByUser(id);
     }
 
     // *** GETTERS & SETTERS

@@ -9,6 +9,7 @@ import spark.Response;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,10 +28,12 @@ public class ShareholdController {
         if (user.getId() > 0) {
             Map params = new HashMap<>();
             ArrayList shareholds = Sharehold.findByUid(user.getId());
+            List<Sharehold> shareholdsForSale = user.getShareholdsForSale();
 
             params.put("user", user);
             params.put("page", pageName.SHAREHOLDS.name());
             params.put("shareholds", shareholds);
+            params.put("shareholdsForSale", shareholdsForSale);
 
             return new ModelAndView(params, "shareholds/list");
         } else {
