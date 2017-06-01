@@ -69,9 +69,11 @@ public class MarketController {
 
         } else {
             Map params = new HashMap<>();
-            ArrayList<Sharehold> shareholds = Market.findAll();
             Market shareholdForSale = Market.find(req.params("id"));
             shareholdForSale.buy(user.getId());
+
+            user.refreshFromDb();
+            user.saveToSession(req.session());
 
             params.put("page", pageName.MARKET.name());
             params.put("user", user);

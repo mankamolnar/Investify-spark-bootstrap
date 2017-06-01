@@ -42,8 +42,6 @@ public class Market extends PsqlObject {
         User buyer = User.find(userId);
 
         if (originalSharehold.getSharehold() > sharehold) {
-            System.out.println("ott");
-
 
             if (buyer.cashOut(price)) {
                 buyer.saveToPsql();
@@ -61,15 +59,21 @@ public class Market extends PsqlObject {
                     userId,
                     sharehold
                 );
+
+                Market.delete(id+"");
             }
 
         } else {
-            System.out.println("itt");
             if (buyer.cashOut(price)) {
-                System.out.println("ki tudta fizetni");
+                User seller = User.find(originalSharehold.getUserId());
+                seller.payIn(price);
+                seller.saveToPsql();
+
                 originalSharehold.setUserId(userId);
-                System.out.println(userId);
                 originalSharehold.saveToPsql();
+
+                buyer.saveToPsql();
+                Market.delete(id+"");
             }
 
         }
@@ -88,10 +92,11 @@ public class Market extends PsqlObject {
 
         try {
             statement.setInt(1, Integer.parseInt(id));
+            System.out.println(statement);
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                new Market(
+                return new Market(
                         resultSet.getInt("id"),
                         resultSet.getInt("shareholdid"),
                         resultSet.getInt("sharehold"),
@@ -110,7 +115,7 @@ public class Market extends PsqlObject {
     }
 
     public static ArrayList<Sharehold> findAll() {
-        String query = "SELECT shareholds.*, market.price FROM market LEFT JOIN shareholds ON market.sharehold = shareholds.id WHERE active = TRUE;";
+        String query = "SELECT shareholds.*, market.id as marketid, market.price FROM market LEFT JOIN shareholds ON market.sharehold = shareholds.id WHERE active = TRUE;";
         PreparedStatement statement = getPreparedStatement(query);
         ResultSet resultSet;
         ArrayList<Sharehold> result = new ArrayList();
@@ -120,7 +125,7 @@ public class Market extends PsqlObject {
 
             while (resultSet.next()) {
                 result.add(new Sharehold(
-                        resultSet.getInt("id"),
+                        resultSet.getInt("marketid"),
                         resultSet.getInt("houseId"),
                         resultSet.getInt("boughtPrice"),
                         resultSet.getInt("price"),
