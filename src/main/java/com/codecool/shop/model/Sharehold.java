@@ -50,7 +50,7 @@ public class Sharehold extends PsqlObject {
     }
 
     public int getMonthlyIncome() {
-        return monthlyIncome;
+        return monthlyIncome*sharehold;
     }
 
     public Date getBoughtDate() {
@@ -164,8 +164,8 @@ public class Sharehold extends PsqlObject {
     }
 
     public static void insert(int houseId, int boughtPrice, int soldPrice, int monthlyIncome, Date boughtDate, Date soldDate, int userId, int sharehold) {
-        String query = "INSERT INTO shareholds (houseId, boughtPrice, soldPrice, monthlyIncome, bougthDate, soldDate, userId, sharehold) VALUES (?, ?, ?, ?, ?, ?);";
-
+        String query = "INSERT INTO shareholds (houseId, boughtPrice, soldPrice, monthlyIncome, boughtDate, soldDate, userId, sharehold) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        System.out.println(userId+"hiditt");
         try {
             PreparedStatement statement = getPreparedStatement(query);
             statement.setInt(1, houseId);
@@ -176,6 +176,7 @@ public class Sharehold extends PsqlObject {
             statement.setDate(6, soldDate);
             statement.setInt(7, userId);
             statement.setInt(8, sharehold);
+            System.out.println(statement);
             statement.execute();
 
         } catch (SQLException e) {

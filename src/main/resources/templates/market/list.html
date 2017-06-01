@@ -40,8 +40,10 @@
                     <td class="tdAddress" th:text="${sharehold.getHouse().getZipCode() + ' ' + sharehold.getHouse().getCity() + ', ' + sharehold.getHouse().getAddress()}"></td>
                     <td th:text="${sharehold.getHouse().getArea()+' nm'}"></td>
                     <td th:text="${sharehold.formatMoney(sharehold.getSoldPrice())}+' HUF'"></td>
-                    <td th:text="${sharehold.getMonthlyIncome()+' HUF'}"></td>
+                    <td th:text="${sharehold.formatMoney(sharehold.getMonthlyIncome())+' HUF'}"></td>
                     <td>
+                        <input type="hidden" th:id="'shareholds'+${sharehold.getHouse().getId()}" th:value="${sharehold.getMaxSellable()}" />
+                        <input type="hidden" th:id="'boughtPrice'+${sharehold.getHouse().getId()}" th:value="${sharehold.getBoughtPrice()}" />
                         <a class="btn btn-success sell" th:href="'/market/buy/'+${sharehold.getId()}">Megvásárlás</a>
                     </td>
                 </tr>

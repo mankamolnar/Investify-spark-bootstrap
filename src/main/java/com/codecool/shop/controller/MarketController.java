@@ -30,6 +30,7 @@ public class MarketController {
         } else {
             Map params = new HashMap<>();
             ArrayList<Sharehold> shareholds = Market.findAll();
+            System.out.println(shareholds);
 
             params.put("page", pageName.MARKET.name());
             params.put("user", user);
@@ -68,16 +69,13 @@ public class MarketController {
             return UserController.loginGet(req, res);
 
         } else {
-            Map params = new HashMap<>();
-            ArrayList<Sharehold> shareholds = Market.findAll();
             Market shareholdForSale = Market.find(req.params("id"));
             shareholdForSale.buy(user.getId());
 
-            params.put("page", pageName.MARKET.name());
-            params.put("user", user);
-            params.put("shareholdForSale", shareholdForSale);
+            user.refreshFromDb();
+            user.saveToSession(req.session());
 
-            return new ModelAndView(params, "market/buy");
+            return all(req, res);
         }
     }
 }

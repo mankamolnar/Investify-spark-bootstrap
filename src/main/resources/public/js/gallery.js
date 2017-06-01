@@ -39,6 +39,7 @@ function ShareholdSeller(houseId) {
     this.loadCurrent = function() {
         var shareholds = $("#shareholds"+houseId).val();
         var boughtPrice = $("#boughtPrice"+houseId).val();
+        console.log(shareholds);
 
         $("#max-quantity-span").html(shareholds);
         $("#quantity").attr("max", shareholds);
@@ -53,17 +54,19 @@ $(document).ready(function() {
     var sellButtons = $(".sell");
 
     galleryLinks.click(function() {
-        var galleryLoader = new GalleryLoader(getHouseId());
+        var btn = $(this);
+        var galleryLoader = new GalleryLoader(getHouseId(btn));
         galleryLoader.getPhotos();
     });
 
     sellButtons.click(function() {
-        var shareholdSeller = new ShareholdSeller(getHouseId());
+        var btn = $(this);
+        var shareholdSeller = new ShareholdSeller(getHouseId(btn));
         shareholdSeller.loadCurrent();
     });
 
-    function getHouseId() {
-        var houseIdWithPrefix = galleryLinks.parent().parent().attr('id');
+    function getHouseId(element) {
+        var houseIdWithPrefix = element.parent().parent().attr('id');
         return houseIdWithPrefix.substring(5, houseIdWithPrefix.length);
     }
 });

@@ -69,11 +69,20 @@ public class User extends PsqlObject implements SessionReady {
         User.update(getId(), username, password, email, cash, shareholds);
     }
 
+    public void refreshFromDb() {
+        User tmpUser = User.find(id);
+        password = tmpUser.getPassword();
+        email = tmpUser.getEmail();
+        cash = tmpUser.getCash();
+        shareholds = tmpUser.getShareholds();
+    }
+
     public void payIn(int money) {
         cash += money;
     }
 
     public boolean cashOut(int bill) {
+        System.out.println("cashout: "+cash+" bill: "+bill);
         if (cash - bill >= 0) {
             cash = cash - bill;
             return true;
@@ -174,7 +183,7 @@ public class User extends PsqlObject implements SessionReady {
         User result = new User(0,"","", 0, 0, "");
 
         try {
-            statement.setString(1, id.toString());
+            statement.setInt(1, id);
             resultSet = statement.executeQuery();
 
 

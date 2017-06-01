@@ -1,5 +1,7 @@
 package com.codecool.shop.model;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -23,14 +25,24 @@ public class DbConnection {
 
     private static void tryConnect() {
         try {
+            URI dbUri = new URI(System.getenv("DATABASE_URL"));
+
+            String username = dbUri.getUserInfo().split(":")[0];
+            String password = dbUri.getUserInfo().split(":")[1];
+            String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
+
+
             CONNECTION = DriverManager.getConnection(
-                    DATABASE,
-                    DB_USER,
-                    DB_PASSWORD
+                    dbUrl,
+                    username,
+                    password
             );
+
         } catch (SQLException e) {
             System.out.println("Couldn't connect to Postgres server!");
 
+        } catch (URISyntaxException e) {
+            System.out.println("Urisyntax error!");
         }
     }
 
