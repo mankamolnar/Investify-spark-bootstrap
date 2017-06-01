@@ -1,6 +1,5 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.model.Investment;
 import com.codecool.shop.model.Sharehold;
 import com.codecool.shop.model.User;
 import spark.ModelAndView;
@@ -34,6 +33,7 @@ public class ShareholdController {
             params.put("page", pageName.SHAREHOLDS.name());
             params.put("shareholds", shareholds);
             params.put("shareholdsForSale", shareholdsForSale);
+            System.out.println(shareholds);
 
             return new ModelAndView(params, "shareholds/list");
         } else {

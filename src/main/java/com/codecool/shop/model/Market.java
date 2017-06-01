@@ -37,14 +37,80 @@ public class Market extends PsqlObject {
         Market.update(getId(), shareholdId, sharehold, price, started, ended, active);
     }
 
+    public void buy(int userId) {
+        Sharehold originalSharehold = Sharehold.find(shareholdId);
+        User buyer = User.find(userId);
+
+        if (originalSharehold.getSharehold() > sharehold) {
+            System.out.println("ott");
+
+
+            if (buyer.cashOut(price)) {
+                buyer.saveToPsql();
+
+                originalSharehold.setSharehold(originalSharehold.getSharehold()-sharehold);
+                originalSharehold.saveToPsql();
+
+                Sharehold.insert(
+                    originalSharehold.getHouseId(),
+                    originalSharehold.getBoughtPrice(),
+                    originalSharehold.getSoldPrice(),
+                    originalSharehold.getMonthlyIncome(),
+                    originalSharehold.getBoughtDate(),
+                    originalSharehold.getSoldDate(),
+                    userId,
+                    sharehold
+                );
+            }
+
+        } else {
+            System.out.println("itt");
+            if (buyer.cashOut(price)) {
+                System.out.println("ki tudta fizetni");
+                originalSharehold.setUserId(userId);
+                System.out.println(userId);
+                originalSharehold.saveToPsql();
+            }
+
+        }
+    }
+
     // *** GETTERS & SETTERS
     public int getSharehold() {
         return sharehold;
     }
 
     // *** STATIC METHODS (PSQL) ***
+    public static Market find(String id) {
+        String query = "SELECT * FROM market WHERE id = ?;";
+        PreparedStatement statement = getPreparedStatement(query);
+        ResultSet resultSet;
+
+        try {
+            statement.setInt(1, Integer.parseInt(id));
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                new Market(
+                        resultSet.getInt("id"),
+                        resultSet.getInt("shareholdid"),
+                        resultSet.getInt("sharehold"),
+                        resultSet.getInt("price"),
+                        resultSet.getDate("started"),
+                        resultSet.getDate("ended"),
+                        resultSet.getBoolean("active")
+                );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return new Market();
+    }
+
     public static ArrayList<Sharehold> findAll() {
-        String query = "SELECT shareholds.* FROM market LEFT JOIN shareholds ON market.shareholdid = shareholds.id WHERE active = TRUE;";
+        String query = "SELECT shareholds.*, market.price FROM market LEFT JOIN shareholds ON market.sharehold = shareholds.id WHERE active = TRUE;";
         PreparedStatement statement = getPreparedStatement(query);
         ResultSet resultSet;
         ArrayList<Sharehold> result = new ArrayList();
@@ -57,7 +123,7 @@ public class Market extends PsqlObject {
                         resultSet.getInt("id"),
                         resultSet.getInt("houseId"),
                         resultSet.getInt("boughtPrice"),
-                        resultSet.getInt("soldPrice"),
+                        resultSet.getInt("price"),
                         resultSet.getInt("monthlyIncome"),
                         resultSet.getDate("boughtDate"),
                         resultSet.getDate("soldDate"),

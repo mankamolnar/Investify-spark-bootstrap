@@ -114,6 +114,62 @@
         </div>
     </div>
 
+    <div class="row" th:if="${shareholdsForSale != null}">
+        <div class="col-lg-1">
+
+        </div>
+        <div class="col-lg-10">
+
+            <h1>Eladó</h1>
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Sharehold</th>
+                    <th>Kép</th>
+                    <th>Ingatlan</th>
+                    <th>Méret</th>
+                    <th>Vétel ár</th>
+                    <th>Eladási ár</th>
+                    <th>Havi bruttó hozam</th>
+                    <th>Megvásárolva</th>
+                    <th>Eladva</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="sharehold, iterationStatus : ${shareholds}" th:id="'house'+${sharehold.getHouse().getId()}">
+                    <td class="b" th:text="${sharehold.getSharehold()+' %'}"></td>
+                    <td th:if="${sharehold.getHouse().getPictures().size() > 0}">
+
+                        <a data-toggle="modal" data-target="#picModal" class="galleryLink">
+                            <img class="img-thumbnail clickable" width="100"
+                                 th:src="${sharehold.getHouse().getPictures().get(0).getUrl()}"
+                                 th:alt="${sharehold.getHouse().getPictures().get(0).getDescription()}" />
+                        </a>
+
+                    </td>
+                    <td class="tdAddress" th:text="${sharehold.getHouse().getZipCode() + ' ' + sharehold.getHouse().getCity() + ', ' + sharehold.getHouse().getAddress()}"></td>
+                    <td th:text="${sharehold.getHouse().getArea()+' nm'}"></td>
+                    <td th:text="${sharehold.formatMoney(sharehold.getBoughtPrice())}"></td>
+                    <td th:text="${sharehold.formatMoney(sharehold.getSoldPrice())}"></td>
+                    <td th:text="${sharehold.getMonthlyIncome()+' HUF'}"></td>
+                    <td th:text="${sharehold.getBoughtDate()}"></td>
+                    <td th:if="${sharehold.getSoldPrice() != 0}" th:text="${sharehold.getSoldDate()}"></td>
+                    <td th:if="${sharehold.getSoldPrice() == 0}">
+                        <input type="hidden" th:id="'shareholds'+${sharehold.getHouse().getId()}" th:value="${sharehold.getMaxSellable()}" />
+                        <input type="hidden" th:id="'boughtPrice'+${sharehold.getHouse().getId()}" th:value="${sharehold.getBoughtPrice()}" />
+                        <button th:if="${sharehold.isSellable()}" class="btn btn-success sell" data-toggle="modal" data-target="#sell-modal">Eladás</button>
+                        <span th:id="${!sharehold.isSellable()}" class="glyphicon glyphicon-remove"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-1">
+
+        </div>
+    </div>
+
 
     <div th:replace="footer :: copy"></div>
 

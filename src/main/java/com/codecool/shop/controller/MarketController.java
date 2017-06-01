@@ -60,4 +60,24 @@ public class MarketController {
         return ShareholdController.list(req, res);
     }
 
+    public static ModelAndView buy(Request req, Response res) {
+        User user = new User();
+        user.initFromSession(req.session());
+
+        if (user.getId() == 0) {
+            return UserController.loginGet(req, res);
+
+        } else {
+            Map params = new HashMap<>();
+            ArrayList<Sharehold> shareholds = Market.findAll();
+            Market shareholdForSale = Market.find(req.params("id"));
+            shareholdForSale.buy(user.getId());
+
+            params.put("page", pageName.MARKET.name());
+            params.put("user", user);
+            params.put("shareholdForSale", shareholdForSale);
+
+            return new ModelAndView(params, "market/buy");
+        }
+    }
 }

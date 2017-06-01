@@ -2,7 +2,6 @@ import static spark.Spark.*;
 import static spark.debug.DebugScreen.enableDebugScreen;
 
 import com.codecool.shop.controller.*;
-import com.codecool.shop.model.Sharehold;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
 public class Main {
@@ -33,6 +32,7 @@ public class Main {
         get("/market", MarketController::all, new ThymeleafTemplateEngine());
         post("/market/sell/:id", MarketController::sell, new ThymeleafTemplateEngine());
         get("/market/delete/:id", MarketController::delete, new ThymeleafTemplateEngine());
+        get("/market/buy/:id", MarketController::buy, new ThymeleafTemplateEngine());
 
         get("/api/get-pictures/:id", ApiController::getPhotos);
 
