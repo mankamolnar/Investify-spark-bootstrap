@@ -68,12 +68,24 @@ public class Sharehold extends PsqlObject {
         return userId;
     }
 
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     public int getSharehold() {
         return sharehold;
     }
 
+    public void setSharehold(int sharehold) {
+        this.sharehold = sharehold;
+    }
+
     public House getHouse() {
         return House.find(houseId);
+    }
+
+    public int getHouseId() {
+        return houseId;
     }
 
     public boolean isSellable() {
@@ -95,7 +107,7 @@ public class Sharehold extends PsqlObject {
         Sharehold result = new Sharehold();
 
         try {
-            statement.setString(1, id.toString());
+            statement.setInt(1, id);
             resultSet = statement.executeQuery();
 
 

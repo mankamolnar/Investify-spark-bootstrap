@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class UserController {
 
-    public enum pageName {
+    private enum pageName {
         LOGIN, REGISTRATION, PAYIN
     }
 
