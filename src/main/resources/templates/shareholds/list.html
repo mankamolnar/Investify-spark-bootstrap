@@ -43,7 +43,7 @@
                     <td th:text="${sharehold.getHouse().getArea()+' nm'}"></td>
                     <td th:text="${sharehold.formatMoney(sharehold.getBoughtPrice())}"></td>
                     <td th:text="${sharehold.formatMoney(sharehold.getSoldPrice())}"></td>
-                    <td th:text="${sharehold.getMonthlyIncome()+' HUF'}"></td>
+                    <td th:text="${sharehold.formatMoney(sharehold.getMonthlyIncome())+' HUF'}"></td>
                     <td th:text="${sharehold.getBoughtDate()}"></td>
                     <td th:if="${sharehold.getSoldPrice() != 0}" th:text="${sharehold.getSoldDate()}"></td>
                     <td th:if="${sharehold.getSoldPrice() == 0}">
@@ -97,9 +97,9 @@
                     </td>
                     <td class="tdAddress" th:text="${sharehold.getHouse().getZipCode() + ' ' + sharehold.getHouse().getCity() + ', ' + sharehold.getHouse().getAddress()}"></td>
                     <td th:text="${sharehold.getHouse().getArea()+' nm'}"></td>
-                    <td th:text="${sharehold.formatMoney(sharehold.getBoughtPrice())}"></td>
+                    <td th:text="${sharehold.formatMoney(sharehold.getBoughtPrice()*sharehold.getSharehold())}"></td>
                     <td th:text="${sharehold.formatMoney(sharehold.getSoldPrice())}"></td>
-                    <td th:text="${sharehold.getMonthlyIncome()+' HUF'}"></td>
+                    <td th:text="${sharehold.formatMoney(sharehold.getMonthlyIncome())+' HUF'}"></td>
                     <td th:text="${sharehold.getBoughtDate()}"></td>
                     <td th:if="${sharehold.getSoldPrice() != 0}" th:text="${sharehold.getSoldDate()}"></td>
                     <td th:if="${sharehold.getSoldPrice() == 0}">

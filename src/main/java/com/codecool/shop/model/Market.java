@@ -41,41 +41,33 @@ public class Market extends PsqlObject {
         Sharehold originalSharehold = Sharehold.find(shareholdId);
         User buyer = User.find(userId);
 
-        if (originalSharehold.getSharehold() > sharehold) {
+        if (buyer.cashOut(price)) {
+            buyer.saveToPsql();
 
-            if (buyer.cashOut(price)) {
-                buyer.saveToPsql();
+            User seller = User.find(originalSharehold.getUserId());
+            seller.payIn(price);
+            seller.saveToPsql();
 
-                originalSharehold.setSharehold(originalSharehold.getSharehold()-sharehold);
+            if (originalSharehold.getSharehold() > sharehold) {
+                originalSharehold.setSharehold(originalSharehold.getSharehold() - sharehold);
                 originalSharehold.saveToPsql();
 
                 Sharehold.insert(
-                    originalSharehold.getHouseId(),
-                    originalSharehold.getBoughtPrice(),
-                    originalSharehold.getSoldPrice(),
-                    originalSharehold.getMonthlyIncome(),
-                    originalSharehold.getBoughtDate(),
-                    originalSharehold.getSoldDate(),
-                    userId,
-                    sharehold
+                        originalSharehold.getHouseId(),
+                        price,
+                        0,
+                        originalSharehold.getMonthlyIncome()/originalSharehold.getSharehold()*sharehold,
+                        new Date(System.currentTimeMillis()),
+                        null,
+                        userId,
+                        sharehold
                 );
 
-                Market.delete(id+"");
+            } else {
+                    originalSharehold.setUserId(userId);
+                    originalSharehold.saveToPsql();
             }
-
-        } else {
-            if (buyer.cashOut(price)) {
-                User seller = User.find(originalSharehold.getUserId());
-                seller.payIn(price);
-                seller.saveToPsql();
-
-                originalSharehold.setUserId(userId);
-                originalSharehold.saveToPsql();
-
-                buyer.saveToPsql();
-                Market.delete(id+"");
-            }
-
+            Market.delete(id + "");
         }
     }
 
@@ -92,7 +84,6 @@ public class Market extends PsqlObject {
 
         try {
             statement.setInt(1, Integer.parseInt(id));
-            System.out.println(statement);
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
@@ -115,7 +106,7 @@ public class Market extends PsqlObject {
     }
 
     public static ArrayList<Sharehold> findAll() {
-        String query = "SELECT shareholds.*, market.id as marketid, market.price FROM market LEFT JOIN shareholds ON market.sharehold = shareholds.id WHERE active = TRUE;";
+        String query = "SELECT shareholds.*, market.id as marketid, market.price, market.sharehold as market_sharehold FROM market LEFT JOIN shareholds ON market.shareholdid = shareholds.id WHERE active = TRUE;";
         PreparedStatement statement = getPreparedStatement(query);
         ResultSet resultSet;
         ArrayList<Sharehold> result = new ArrayList();
@@ -133,7 +124,7 @@ public class Market extends PsqlObject {
                         resultSet.getDate("boughtDate"),
                         resultSet.getDate("soldDate"),
                         resultSet.getInt("userId"),
-                        resultSet.getInt("sharehold")
+                        resultSet.getInt("market_sharehold")
                 ));
             }
 
@@ -145,7 +136,7 @@ public class Market extends PsqlObject {
     }
 
     public static List<Sharehold> findAllByUser(int userid) {
-        String query = "SELECT shareholds.*, market.id as mid FROM market LEFT JOIN shareholds ON market.shareholdid = shareholds.id WHERE active = TRUE and shareholds.userid = ?;";
+        String query = "SELECT shareholds.*, market.id as mid, market.sharehold as market_sharehold FROM market LEFT JOIN shareholds ON market.shareholdid = shareholds.id WHERE active = TRUE and shareholds.userid = ?;";
         PreparedStatement statement = getPreparedStatement(query);
         ResultSet resultSet;
         ArrayList<Sharehold> result = new ArrayList();
@@ -164,7 +155,7 @@ public class Market extends PsqlObject {
                         resultSet.getDate("boughtDate"),
                         resultSet.getDate("soldDate"),
                         resultSet.getInt("userId"),
-                        resultSet.getInt("sharehold")
+                        resultSet.getInt("market_sharehold")
                 ));
             }
 
@@ -217,7 +208,7 @@ public class Market extends PsqlObject {
     }
 
     public static int countShareholdsForSale(int shareholdId) {
-        String query = "select count(id) as shareholds from market where shareholdid = ?;";
+        String query = "select sum(sharehold) as shareholds from market where shareholdid = ?;";
         PreparedStatement statement = getPreparedStatement(query);
         ResultSet resultSet;
 
